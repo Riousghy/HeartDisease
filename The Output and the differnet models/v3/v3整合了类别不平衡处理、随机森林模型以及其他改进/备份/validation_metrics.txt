@@ -1,3 +1,0 @@
-Validation Accuracy: 0.7441860465116279
-Validation Precision: 0.7093023255813954
-Validation Recall: 0.7441860465116279

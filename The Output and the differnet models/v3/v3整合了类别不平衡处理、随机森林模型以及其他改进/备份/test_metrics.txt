@@ -1,3 +1,0 @@
-Test Accuracy: 0.627906976744186
-Test Precision: 0.6327673188138304
-Test Recall: 0.627906976744186
