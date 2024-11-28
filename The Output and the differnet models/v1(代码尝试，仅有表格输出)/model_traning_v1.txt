@@ -1,0 +1,79 @@
+# Import required libraries
+import pandas as pd
+import joblib
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, precision_score, recall_score
+
+# Load cleaned data
+file_path = "cleaned_heart_disease.csv"
+data = pd.read_csv(file_path)
+
+# 1. Feature Engineering
+# One-Hot Encoding for categorical variables
+categorical_columns = ['cp', 'restecg', 'slope']
+data = pd.get_dummies(data, columns=categorical_columns, drop_first=True)
+
+# Normalize continuous variables
+scaler = StandardScaler()
+continuous_columns = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak']
+data[continuous_columns] = scaler.fit_transform(data[continuous_columns])
+
+# Save processed data to a file
+data.to_csv('processed_heart_disease.csv', index=False)
+
+# 2. Data Splitting
+X = data.drop('num', axis=1)  # Features
+y = data['num']  # Target
+
+# Split data into train, validation, and test sets
+X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.3, random_state=42)
+X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
+
+# Save split data to files
+X_train.to_csv('X_train.csv', index=False)
+y_train.to_csv('y_train.csv', index=False)
+X_val.to_csv('X_val.csv', index=False)
+y_val.to_csv('y_val.csv', index=False)
+X_test.to_csv('X_test.csv', index=False)
+y_test.to_csv('y_test.csv', index=False)
+
+# 3. Model Training
+# Initialize and train Logistic Regression model
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# Save the trained model
+joblib.dump(model, 'logistic_regression_model.pkl')
+
+# 4. Model Evaluation
+# Evaluate on validation set
+y_val_pred = model.predict(X_val)
+val_metrics = {
+    "Validation Accuracy": accuracy_score(y_val, y_val_pred),
+    "Validation Precision": precision_score(y_val, y_val_pred, average='binary'),
+    "Validation Recall": recall_score(y_val, y_val_pred, average='binary')
+}
+
+# Save validation metrics to a file
+with open('validation_metrics.txt', 'w') as f:
+    for key, value in val_metrics.items():
+        f.write(f"{key}: {value}\n")
+
+# Evaluate on test set
+y_test_pred = model.predict(X_test)
+test_metrics = {
+    "Test Accuracy": accuracy_score(y_test, y_test_pred),
+    "Test Precision": precision_score(y_test, y_test_pred, average='binary'),
+    "Test Recall": recall_score(y_test, y_test_pred, average='binary')
+}
+
+# Save test metrics to a file
+with open('test_metrics.txt', 'w') as f:
+    for key, value in test_metrics.items():
+        f.write(f"{key}: {value}\n")
+
+# Print metrics
+print("Validation Metrics:", val_metrics)
+print("Test Metrics:", test_metrics)

@@ -1,0 +1,34 @@
+import os
+import subprocess
+
+# Locate the current script directory
+current_dir = os.path.dirname(__file__)
+data_cleaning_script = os.path.join(current_dir, 'data_cleaning.py')
+
+# Execute data_cleaning.py to clean data and save the output CSV file
+print("Starting data cleaning process...")
+try:
+    subprocess.run(['python', data_cleaning_script], check=True)
+    print("Data cleaning completed.")
+except subprocess.CalledProcessError as e:
+    print(f"Error occurred while cleaning data: {e}")
+    exit()
+
+# Load the cleaned dataset for further processing
+cleaned_file = os.path.join(current_dir, 'cleaned_heart_disease.csv')
+
+if not os.path.exists(cleaned_file):
+    print(f"Cleaned dataset not found at: {cleaned_file}")
+    exit()
+
+import pandas as pd
+
+# Load cleaned data
+print(f"Loading cleaned data from: {cleaned_file}")
+data = pd.read_csv(cleaned_file)
+
+# Example: Display dataset information
+print("Cleaned Data Info:")
+print(data.info())
+
+# Proceed with further steps (e.g., model training or analysis)

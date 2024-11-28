@@ -1,0 +1,28 @@
+#import required libiraries
+#import Data.For UCI, WE CAN JUST USE:pip install ucimlrepo
+#from ucimlrepo import fetch_ucirepo 
+ 
+# fetch dataset 
+#heart_disease = fetch_ucirepo(id=45) 
+  
+# data (as pandas dataframes) 
+#X = heart_disease.data.features 
+#y = heart_disease.data.targets 
+  
+# metadata 
+#print(heart_disease.metadata) 
+  
+# variable information 
+#print(heart_disease.variables) 
+
+# data handling
+#import pandas as pd
+#import numpy as np
+
+# Data visuaization
+#import matplotlib.pyplot as plt
+#import seaborn as sns
+
+# Machine Model(Not decide yet)
+
+#from sklearn import datasets
