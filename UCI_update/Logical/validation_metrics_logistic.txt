@@ -1,0 +1,5 @@
+Validation Accuracy: 0.627906976744186
+Validation Precision: 0.6947286821705426
+Validation Recall: 0.627906976744186
+Validation F1 Score: 0.6579931696210766
+Validation ROC AUC Score: 0.7596867167919801
